@@ -68,6 +68,7 @@ export type Product = {
   diameterMm?: number;
   segmentHeightMm?: number;
   supportsIrrigation?: boolean;
+  availabilityStatus?: "inStock" | "madeToOrder" | "soldOut"; // customer-facing
 };
 
 const productBySlugQuery = `
@@ -85,6 +86,7 @@ const productBySlugQuery = `
   skuPrefix,
   sku,
   etsyListingId,
+  availabilityStatus,
   pattern->{
     _id,
     name,

@@ -57,6 +57,7 @@ export default function ProductPageClient({ product }: Props) {
     kind,
     category,
     etsyListingId,
+    availabilityStatus, // ⬅️ pull it from product
   } = product;
 
   const isKit = kind === "kit";
@@ -118,6 +119,16 @@ export default function ProductPageClient({ product }: Props) {
   const etsyUrl = etsyListingId
     ? `https://www.etsy.com/listing/${etsyListingId}`
     : undefined;
+
+  // Human-friendly availability label
+  const availabilityLabel =
+    availabilityStatus === "inStock"
+      ? "In stock"
+      : availabilityStatus === "madeToOrder"
+      ? "Made to order"
+      : availabilityStatus === "soldOut"
+      ? "Sold out"
+      : undefined;
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
@@ -211,6 +222,11 @@ export default function ProductPageClient({ product }: Props) {
             {displaySku && (
               <p className="text-xs text-foreground/60">
                 SKU: {displaySku}
+              </p>
+            )}
+            {availabilityLabel && (
+              <p className="text-xs text-foreground/60">
+                {availabilityLabel}
               </p>
             )}
           </div>

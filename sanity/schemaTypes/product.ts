@@ -323,6 +323,22 @@ export default defineType({
 
     // Status / meta
     defineField({
+      name: 'availabilityStatus',
+      title: 'Availability',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'In stock', value: 'inStock' },
+          { title: 'Made to order', value: 'madeToOrder' },
+          { title: 'Sold out', value: 'soldOut' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'inStock',
+      description: 'Customer-facing availability status.',
+    }),
+
+    defineField({
       name: 'status',
       title: 'Status',
       type: 'string',

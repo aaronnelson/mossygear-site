@@ -12,8 +12,8 @@ type Product = {
   shortDescription?: string;
   etsyUrl?: string;
   price?: number;
-  currency?: string;
-  status?: string;
+  status?: string; // active / draft / archived (editorial)
+  availabilityStatus?: string; // inStock / madeToOrder / soldOut (customer-facing)
   tags?: string[];
   image?: any;
   kind?: string;
@@ -51,8 +51,8 @@ export default async function HomePage() {
         shortDescription,
         etsyUrl,
         price,
-        currency,
         status,
+        "availabilityStatus": availabilityStatus,
         "tags": coalesce(metadata.tags, tags),
         "image": images[0]
       }`
@@ -189,35 +189,24 @@ export default async function HomePage() {
                 )}
 
                 <div className="flex items-center justify-between mt-auto gap-3">
-                  {/* Price + status */}
+                  {/* Price + availability */}
                   <div className="flex flex-col">
                     {product.price != null && (
                       <span className="text-sm font-medium text-foreground">
-                        {product.currency === "USD" && "$"}
-                        {product.currency === "EUR" && "€"}
-                        {product.currency === "GBP" && "£"}
-                        {product.currency !== "USD" &&
-                          product.currency !== "EUR" &&
-                          product.currency !== "GBP" &&
-                          ""}
-                        {product.price.toFixed(2)}
-                        {product.currency &&
-                        ["USD", "EUR", "GBP"].includes(product.currency)
-                          ? ""
-                          : product.currency
-                          ? ` ${product.currency}`
-                          : ""}
+                        ${product.price.toFixed(2)}
                       </span>
                     )}
-                    {product.status && (
+                    {product.availabilityStatus && (
                       <span className="text-[0.65rem] text-foreground/60">
-                        {product.status === "inStock" && "In stock"}
-                        {product.status === "madeToOrder" &&
+                        {product.availabilityStatus === "inStock" &&
+                          "In stock"}
+                        {product.availabilityStatus === "madeToOrder" &&
                           "Made to order"}
-                        {product.status === "soldOut" && "Sold out"}
+                        {product.availabilityStatus === "soldOut" &&
+                          "Sold out"}
                         {!["inStock", "madeToOrder", "soldOut"].includes(
-                          product.status
-                        ) && product.status}
+                          product.availabilityStatus
+                        ) && product.availabilityStatus}
                       </span>
                     )}
                   </div>
