@@ -1,5 +1,5 @@
 // schemas/pattern.ts
-import {defineType, defineField} from 'sanity'
+import { defineType, defineField } from 'sanity';
 
 export default defineType({
   name: 'pattern',
@@ -24,6 +24,14 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'skuCode',
+      title: 'SKU Code',
+      type: 'string',
+      description:
+        'Short code used in SKUs, e.g. AD for Askew Dense Bamboo.',
+      validation: (Rule) => Rule.required().min(1).max(8),
+    }),
+    defineField({
       name: 'description',
       title: 'Description',
       type: 'text',
@@ -37,4 +45,4 @@ export default defineType({
       description: 'Optional: an image that shows this pattern up close.',
     }),
   ],
-})
+});

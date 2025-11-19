@@ -1,7 +1,7 @@
 // schemas/product.ts
-import {defineType, defineField, defineArrayMember} from 'sanity'
-import {createClient} from '@sanity/client'
-import {apiVersion, dataset, projectId} from '../env' // <- adjust path if needed
+import { defineType, defineField, defineArrayMember } from 'sanity';
+import { createClient } from '@sanity/client';
+import { apiVersion, dataset, projectId } from '../env'; // <- adjust path if needed
 
 // Read-only client used only for initial values in Studio
 const client = createClient({
@@ -9,7 +9,7 @@ const client = createClient({
   dataset,
   apiVersion,
   useCdn: false,
-})
+});
 
 export default defineType({
   name: 'product',
@@ -19,15 +19,15 @@ export default defineType({
   // This only runs when you create a NEW product document in Studio.
   initialValue: async () => {
     const colorIds: string[] = await client.fetch(
-      `*[_type == "filamentColor"]._id`
-    )
+      `*[_type == "filamentColor"]._id`,
+    );
 
     return {
       availableFilamentColors: colorIds.map((id) => ({
         _type: 'reference',
         _ref: id,
       })),
-    }
+    };
   },
 
   fields: [
@@ -55,9 +55,9 @@ export default defineType({
       type: 'string',
       options: {
         list: [
-          {title: 'Kit (bundle of components)', value: 'kit'},
-          {title: 'Component (segment, lid, base, etc.)', value: 'component'},
-          {title: 'Accessory', value: 'accessory'},
+          { title: 'Kit (bundle of components)', value: 'kit' },
+          { title: 'Component (segment, lid, base, etc.)', value: 'component' },
+          { title: 'Accessory', value: 'accessory' },
         ],
         layout: 'radio',
       },
@@ -71,12 +71,12 @@ export default defineType({
       type: 'string',
       options: {
         list: [
-          {title: 'Modular Moss Pole', value: 'moss-pole'},
-          {title: 'Segment', value: 'segment'},
-          {title: 'Base', value: 'base'},
-          {title: 'Lid / Cap', value: 'lid'},
-          {title: 'Trellis', value: 'trellis'},
-          {title: 'Accessory', value: 'accessory'},
+          { title: 'Modular Moss Pole', value: 'moss-pole' },
+          { title: 'Segment', value: 'segment' },
+          { title: 'Base', value: 'base' },
+          { title: 'Lid / Cap', value: 'lid' },
+          { title: 'Trellis', value: 'trellis' },
+          { title: 'Accessory', value: 'accessory' },
         ],
       },
     }),
@@ -85,7 +85,7 @@ export default defineType({
       name: 'pattern',
       title: 'Pattern',
       type: 'reference',
-      to: [{type: 'pattern'}],
+      to: [{ type: 'pattern' }],
       description:
         'For patterned kits/components: choose a pattern. Leave empty for universal parts like lids.',
     }),
@@ -110,15 +110,15 @@ export default defineType({
       name: 'description',
       title: 'Full Description',
       type: 'array',
-      of: [{type: 'block'}],
+      of: [{ type: 'block' }],
     }),
 
     defineField({
       name: 'images',
       title: 'Images',
       type: 'array',
-      of: [{type: 'image'}],
-      options: {layout: 'grid'},
+      of: [{ type: 'image' }],
+      options: { layout: 'grid' },
       validation: (Rule) => Rule.min(1),
     }),
 
@@ -129,6 +129,24 @@ export default defineType({
       type: 'number',
       description: 'Price for the default configuration.',
       validation: (Rule) => Rule.required().min(0),
+    }),
+
+    defineField({
+      name: 'variants',
+      title: 'Kit Variants',
+      type: 'array',
+      of: [{ type: 'productVariant' }],
+      description:
+        'Use this for kit options (e.g. 6" kit, 8" kit, full kit). Hidden for non-kit products.',
+      hidden: ({ parent }) => parent?.kind !== 'kit',
+    }),
+
+    defineField({
+      name: 'skuPrefix',
+      title: 'SKU Prefix',
+      type: 'string',
+      initialValue: 'MP-',
+      description: 'Usually "MP-". Used when generating kit SKUs.',
     }),
 
     defineField({
@@ -151,7 +169,7 @@ export default defineType({
       name: 'availableFilamentColors',
       title: 'Available Filament Colors',
       type: 'array',
-      of: [{type: 'reference', to: [{type: 'filamentColor'}]}],
+      of: [{ type: 'reference', to: [{ type: 'filamentColor' }] }],
       description: 'Which filament colors this product can be printed in.',
     }),
 
@@ -178,7 +196,6 @@ export default defineType({
     }),
 
     // PDP configuration options (for dropdowns / swatches)
-    // Use this for things like diameter, height, pattern variants if needed (not filament colors).
     defineField({
       name: 'options',
       title: 'Configuration Options',
@@ -199,7 +216,8 @@ export default defineType({
               name: 'key',
               title: 'Key',
               type: 'string',
-              description: 'Machine-readable key, e.g. diameter, height, patternVariant',
+              description:
+                'Machine-readable key, e.g. diameter, height, patternVariant',
             }),
             defineField({
               name: 'values',
@@ -221,13 +239,15 @@ export default defineType({
                       name: 'value',
                       title: 'Value',
                       type: 'string',
-                      description: 'Slug-ish value used in the front end (e.g. 55mm, tall).',
+                      description:
+                        'Slug-ish value used in the front end (e.g. 55mm, tall).',
                     }),
                     defineField({
                       name: 'priceDelta',
                       title: 'Price adjustment',
                       type: 'number',
-                      description: 'Optional price change if this option costs more (can be negative).',
+                      description:
+                        'Optional price change if this option costs more (can be negative).',
                     }),
                   ],
                 }),
@@ -253,7 +273,7 @@ export default defineType({
               name: 'component',
               title: 'Component Product',
               type: 'reference',
-              to: [{type: 'product'}],
+              to: [{ type: 'product' }],
               description: 'Pick a component (segment, base, lid, etc.).',
             }),
             defineField({
@@ -268,14 +288,27 @@ export default defineType({
               title: 'Required',
               type: 'boolean',
               initialValue: true,
-              description: 'If unchecked, this item is an optional add-on in the kit.',
+              description:
+                'If unchecked, this item is an optional add-on in the kit.',
             }),
           ],
+          preview: {
+            select: {
+              title: 'component.title',
+              quantity: 'quantity',
+            },
+            prepare({ title, quantity }) {
+              return {
+                title: title || 'No component selected',
+                subtitle: `Qty: ${quantity ?? 1}`,
+              };
+            },
+          },
         }),
       ],
-      hidden: ({parent}) => parent?.kind !== 'kit',
+      hidden: ({ parent }) => parent?.kind !== 'kit',
       description:
-        'For kits: list which components are included (segments, base, lids, etc.) and their quantities.',
+        'Default kit contents for this product. For variant-specific kits (e.g. 6" vs 8" vs full), use the kitContents field on each variant.',
     }),
 
     // Compatibility / cross-sell
@@ -283,8 +316,9 @@ export default defineType({
       name: 'compatibleWith',
       title: 'Compatible With',
       type: 'array',
-      of: [{type: 'reference', to: [{type: 'product'}]}],
-      description: 'Other products that work with this one (extra segments, bases, toppers, etc.).',
+      of: [{ type: 'reference', to: [{ type: 'product' }] }],
+      description:
+        'Other products that work with this one (extra segments, bases, toppers, etc.).',
     }),
 
     // Status / meta
@@ -294,9 +328,9 @@ export default defineType({
       type: 'string',
       options: {
         list: [
-          {title: 'Active', value: 'active'},
-          {title: 'Draft / Hidden', value: 'draft'},
-          {title: 'Archived', value: 'archived'},
+          { title: 'Active', value: 'active' },
+          { title: 'Draft / Hidden', value: 'draft' },
+          { title: 'Archived', value: 'archived' },
         ],
         layout: 'radio',
       },
@@ -330,9 +364,9 @@ export default defineType({
           name: 'tags',
           title: 'Tags',
           type: 'array',
-          of: [{type: 'string'}],
+          of: [{ type: 'string' }],
         }),
       ],
     }),
   ],
-})
+});
