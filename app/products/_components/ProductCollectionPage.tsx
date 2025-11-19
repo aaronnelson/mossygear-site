@@ -164,24 +164,26 @@ export async function ProductCollectionPage({
       : "Product";
 
   return (
-    <main className="min-h-screen bg-slate-950 text-slate-50">
+    <main className="min-h-screen bg-background text-foreground">
       <div className="max-w-5xl mx-auto px-4 py-10 space-y-6">
         {/* Header driven from Sanity */}
         <header className="space-y-2">
           {eyebrow && (
-            <p className="text-xs uppercase tracking-[0.2em] text-slate-400">
+            <p className="text-xs uppercase tracking-[0.2em] text-foreground/60">
               {eyebrow}
             </p>
           )}
           <h1 className="text-2xl md:text-3xl font-semibold">{title}</h1>
           {subtitle && (
-            <p className="text-sm text-slate-300 max-w-2xl">{subtitle}</p>
+            <p className="text-sm text-foreground/80 max-w-2xl">
+              {subtitle}
+            </p>
           )}
         </header>
 
         {/* Grid */}
         {products.length === 0 ? (
-          <p className="text-sm text-slate-400">
+          <p className="text-sm text-foreground/60">
             No products found for this collection.
           </p>
         ) : (
@@ -189,7 +191,7 @@ export async function ProductCollectionPage({
             {products.map((product) => (
               <article
                 key={product._id}
-                className="rounded-2xl bg-slate-900/80 border border-slate-800 p-4 flex flex-col justify-between"
+                className="rounded-2xl bg-background/60 border border-foreground/15 p-4 flex flex-col justify-between"
               >
                 <Link href={`/products/${product.slug}`}>
                   <div className="mb-4 cursor-pointer">
@@ -214,13 +216,13 @@ export async function ProductCollectionPage({
                       <h2 className="text-base font-medium line-clamp-2">
                         {product.title}
                       </h2>
-                      <span className="text-[0.6rem] uppercase tracking-[0.16em] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 whitespace-nowrap">
+                      <span className="text-[0.6rem] uppercase tracking-[0.16em] px-2 py-0.5 rounded-full bg-foreground/10 text-foreground/80 whitespace-nowrap">
                         {pillLabel}
                       </span>
                     </div>
 
                     {/* Pattern + specs (for segments) */}
-                    <div className="flex flex-wrap items-center gap-2 text-[0.7rem] text-slate-400">
+                    <div className="flex flex-wrap items-center gap-2 text-[0.7rem] text-foreground/60">
                       {product.pattern?.name && (
                         <span className="uppercase tracking-[0.16em]">
                           {product.pattern.name}
@@ -228,7 +230,7 @@ export async function ProductCollectionPage({
                       )}
                       {variant === "segments" &&
                         (product.diameterMm || product.segmentHeightMm) && (
-                          <span className="text-slate-500">
+                          <span className="text-foreground/50">
                             {product.diameterMm && `${product.diameterMm} mm`}
                             {product.diameterMm &&
                               product.segmentHeightMm &&
@@ -241,7 +243,7 @@ export async function ProductCollectionPage({
                   </div>
                 </Link>
 
-                <p className="text-slate-300 text-xs mb-3 flex-1">
+                <p className="text-foreground/75 text-xs mb-3 flex-1">
                   {product.shortDescription || "No description yet."}
                 </p>
 
@@ -249,7 +251,7 @@ export async function ProductCollectionPage({
                   {/* Price */}
                   <div className="flex flex-col">
                     {product.price != null && (
-                      <span className="text-sm font-medium text-slate-50">
+                      <span className="text-sm font-medium text-foreground">
                         {product.currency === "USD" && "$"}
                         {product.currency === "EUR" && "€"}
                         {product.currency === "GBP" && "£"}
@@ -259,7 +261,7 @@ export async function ProductCollectionPage({
                           ""}
                         {product.price.toFixed(2)}
                         {product.priceUnit && (
-                          <span className="text-[0.65rem] text-slate-400 ml-1">
+                          <span className="text-[0.65rem] text-foreground/60 ml-1">
                             {product.priceUnit}
                           </span>
                         )}
@@ -269,7 +271,7 @@ export async function ProductCollectionPage({
 
                   <Link
                     href={`/products/${product.slug}`}
-                    className="inline-flex items-center justify-center px-3 py-2 rounded-full bg-teal-400 text-slate-900 text-xs font-medium whitespace-nowrap hover:bg-teal-300 transition"
+                    className="inline-flex items-center justify-center px-3 py-2 rounded-full bg-accent text-background text-xs font-medium whitespace-nowrap hover:bg-accent-soft transition"
                   >
                     View details
                   </Link>

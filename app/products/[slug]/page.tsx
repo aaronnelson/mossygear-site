@@ -164,6 +164,9 @@ export default async function ProductPage({
     return notFound();
   }
 
-  // Hand everything off to the client component
-  return <ProductPageClient product={product} />;
+  return (
+    <main className="min-h-screen bg-background text-foreground">
+      <ProductPageClient product={product} />
+    </main>
+  );
 }

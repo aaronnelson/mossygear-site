@@ -18,7 +18,7 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
   return (
     <div>
       {/* Main image */}
-      <div className="w-full aspect-[4/3] rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 mb-3">
+      <div className="w-full aspect-[4/3] rounded-2xl overflow-hidden bg-background/60 border border-foreground/15 mb-3">
         {mainImage ? (
           <Image
             src={urlForImage(mainImage).width(900).height(675).url()}
@@ -28,7 +28,7 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-slate-500 text-sm">
+          <div className="w-full h-full flex items-center justify-center text-foreground/60 text-sm">
             No image yet
           </div>
         )}
@@ -45,8 +45,10 @@ export function ProductGallery({ images, title }: ProductGalleryProps) {
                 type="button"
                 onClick={() => setActiveIndex(idx)}
                 className={[
-                  "w-20 h-20 rounded-xl overflow-hidden bg-slate-900 border",
-                  isActive ? "border-teal-400" : "border-slate-800 hover:border-slate-500",
+                  "w-20 h-20 rounded-xl overflow-hidden bg-background/60 border",
+                  isActive
+                    ? "border-accent"
+                    : "border-foreground/20 hover:border-foreground/60",
                 ].join(" ")}
               >
                 <Image

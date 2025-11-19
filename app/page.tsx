@@ -7,9 +7,9 @@ export const dynamic = "force-dynamic";
 
 type Product = {
   _id: string;
-  name: string;              // aliased from title in the query
+  name: string; // aliased from title in the query
   slug: string;
-  shortDescription?: string; // new: plain text used for the card
+  shortDescription?: string;
   etsyUrl?: string;
   price?: number;
   currency?: string;
@@ -47,14 +47,14 @@ export default async function HomePage() {
         _id,
         "name": coalesce(title, name),
         "slug": slug.current,
-        kind,         
+        kind,
         shortDescription,
         etsyUrl,
         price,
         currency,
         status,
         "tags": coalesce(metadata.tags, tags),
-        "image": images[0] 
+        "image": images[0]
       }`
     ),
   ]);
@@ -78,19 +78,19 @@ export default async function HomePage() {
     siteSettings?.secondaryCtaHref ?? "/products/modular-moss-poles";
 
   return (
-    <main className="min-h-screen bg-slate-900 text-slate-50 flex flex-col">
+    <main className="min-h-screen bg-background text-foreground flex flex-col">
       {/* Hero */}
       <section className="flex-1 flex items-center justify-center px-4">
         <div className="text-center max-w-md">
           {heroEyebrow && (
-            <p className="text-xs uppercase tracking-[0.25em] text-slate-400 mb-3">
+            <p className="text-xs uppercase tracking-[0.25em] text-foreground/60 mb-3">
               {heroEyebrow}
             </p>
           )}
           <h1 className="text-4xl font-semibold mb-3">
             {heroTitle}
           </h1>
-          <p className="text-slate-300 mb-6">
+          <p className="text-foreground/80 mb-6">
             {heroSubtitle}
           </p>
 
@@ -98,7 +98,7 @@ export default async function HomePage() {
             {primaryCtaLabel && primaryCtaHref && (
               <a
                 href={primaryCtaHref}
-                className="inline-flex items-center px-5 py-2.5 rounded-full bg-teal-400 text-slate-900 text-sm font-medium hover:bg-teal-300 transition"
+                className="inline-flex items-center px-5 py-2.5 rounded-full bg-accent text-background text-sm font-medium hover:bg-accent-soft transition"
               >
                 {primaryCtaLabel}
               </a>
@@ -107,7 +107,7 @@ export default async function HomePage() {
             {secondaryCtaLabel && secondaryCtaHref && (
               <a
                 href={secondaryCtaHref}
-                className="inline-flex items-center px-5 py-2.5 rounded-full border border-slate-600 text-sm font-medium text-slate-100 hover:border-slate-300 hover:text-slate-50 transition"
+                className="inline-flex items-center px-5 py-2.5 rounded-full border border-foreground/40 text-sm font-medium text-foreground hover:border-foreground/70 hover:text-foreground transition"
               >
                 {secondaryCtaLabel}
               </a>
@@ -117,15 +117,20 @@ export default async function HomePage() {
       </section>
 
       {/* Product grid section */}
-      <section id="products" className="border-t border-slate-800 bg-slate-950 px-4 py-10">
+      <section
+        id="products"
+        className="border-t border-foreground/15 bg-background/95 px-4 py-10"
+      >
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-lg font-semibold mb-4">Featured products</h2>
+          <h2 className="text-lg font-semibold mb-4">
+            Featured products
+          </h2>
 
           <div className="grid gap-6 md:grid-cols-3">
             {products.map((product) => (
               <article
                 key={product._id}
-                className="rounded-2xl bg-slate-900/80 border border-slate-800 p-4 flex flex-col justify-between"
+                className="rounded-2xl bg-background/60 border border-foreground/15 p-4 flex flex-col justify-between"
               >
                 <Link href={`/products/${product.slug}`}>
                   <div className="mb-4">
@@ -133,7 +138,10 @@ export default async function HomePage() {
                       <Image
                         src={
                           product.image
-                            ? urlForImage(product.image).width(600).height(450).url()
+                            ? urlForImage(product.image)
+                                .width(600)
+                                .height(450)
+                                .url()
                             : "/images/mossy-1.png"
                         }
                         alt={product.name}
@@ -149,18 +157,20 @@ export default async function HomePage() {
                       </h3>
 
                       {product.kind && (
-                        <span className="text-[0.6rem] uppercase tracking-[0.16em] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 whitespace-nowrap">
+                        <span className="text-[0.6rem] uppercase tracking-[0.16em] px-2 py-0.5 rounded-full bg-background/60 text-foreground/80 whitespace-nowrap border border-foreground/15">
                           {product.kind === "kit" && "Kit"}
                           {product.kind === "component" && "Component"}
                           {product.kind === "accessory" && "Accessory"}
-                          {!["kit", "component", "accessory"].includes(product.kind) &&
-                            product.kind}
+                          {!["kit", "component", "accessory"].includes(
+                            product.kind
+                          ) && product.kind}
                         </span>
                       )}
                     </div>
                   </div>
                 </Link>
-                <p className="text-slate-300 text-xs mb-3 flex-1">
+
+                <p className="text-foreground/75 text-xs mb-3 flex-1">
                   {product.shortDescription || "No description yet."}
                 </p>
 
@@ -170,7 +180,7 @@ export default async function HomePage() {
                     {product.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="inline-flex items-center px-2 py-0.5 rounded-full bg-slate-800 text-[0.65rem] text-slate-300"
+                        className="inline-flex items-center px-2 py-0.5 rounded-full bg-background/60 text-[0.65rem] text-foreground/80 border border-foreground/15"
                       >
                         {tag}
                       </span>
@@ -182,7 +192,7 @@ export default async function HomePage() {
                   {/* Price + status */}
                   <div className="flex flex-col">
                     {product.price != null && (
-                      <span className="text-sm font-medium text-slate-50">
+                      <span className="text-sm font-medium text-foreground">
                         {product.currency === "USD" && "$"}
                         {product.currency === "EUR" && "€"}
                         {product.currency === "GBP" && "£"}
@@ -191,7 +201,8 @@ export default async function HomePage() {
                           product.currency !== "GBP" &&
                           ""}
                         {product.price.toFixed(2)}
-                        {product.currency && ["USD", "EUR", "GBP"].includes(product.currency)
+                        {product.currency &&
+                        ["USD", "EUR", "GBP"].includes(product.currency)
                           ? ""
                           : product.currency
                           ? ` ${product.currency}`
@@ -199,9 +210,10 @@ export default async function HomePage() {
                       </span>
                     )}
                     {product.status && (
-                      <span className="text-[0.65rem] text-slate-400">
+                      <span className="text-[0.65rem] text-foreground/60">
                         {product.status === "inStock" && "In stock"}
-                        {product.status === "madeToOrder" && "Made to order"}
+                        {product.status === "madeToOrder" &&
+                          "Made to order"}
                         {product.status === "soldOut" && "Sold out"}
                         {!["inStock", "madeToOrder", "soldOut"].includes(
                           product.status
@@ -216,7 +228,7 @@ export default async function HomePage() {
                       href={product.etsyUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center justify-center px-3 py-2 rounded-full bg-teal-400 text-slate-900 text-xs font-medium whitespace-nowrap hover:bg-teal-300 transition"
+                      className="inline-flex items-center justify-center px-3 py-2 rounded-full bg-accent text-background text-xs font-medium whitespace-nowrap hover:bg-accent-soft transition"
                     >
                       View on Etsy
                     </a>

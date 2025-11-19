@@ -5,13 +5,22 @@
   --foreground: #171717;
 }
 
+/* Tailwind v4 theme config */
 @theme inline {
+  /* Map global variables into Tailwind tokens */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  /* Accent colors – customize these as you like */
+  --color-accent: #0ea5e9;
+  --color-accent-soft: #e0f2fe;
+
+  /* Hook Tailwind font tokens up to next/font variables */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
+/* Dark mode via prefers-color-scheme */
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -22,5 +31,6 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* Use the Geist font from layout.tsx */
+  font-family: var(--font-geist-sans);
 }
