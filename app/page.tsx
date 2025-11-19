@@ -3,6 +3,7 @@ import { sanityClient } from "@/lib/sanityClient";
 import { urlForImage } from "@/lib/sanityImage";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
 
 type Product = {
   _id: string;
@@ -74,7 +75,7 @@ export default async function HomePage() {
   const secondaryCtaLabel =
     siteSettings?.secondaryCtaLabel ?? "View products";
   const secondaryCtaHref =
-    siteSettings?.secondaryCtaHref ?? "#products";
+    siteSettings?.secondaryCtaHref ?? "/products/modular-moss-poles";
 
   return (
     <main className="min-h-screen bg-slate-900 text-slate-50 flex flex-col">
