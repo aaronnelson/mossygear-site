@@ -3,8 +3,10 @@ import product from './product';
 import filamentColor from './filamentColor';
 import patterns from './patterns';
 import { siteSettingsType } from './siteSettings';
+import productCollection from './productCollection';
+
 
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [product, filamentColor, patterns, siteSettingsType],
+  types: [product, filamentColor, productCollection, patterns, siteSettingsType],
 }
